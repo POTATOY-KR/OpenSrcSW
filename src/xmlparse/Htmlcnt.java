@@ -80,7 +80,7 @@ public class Htmlcnt{
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		StreamResult result = new StreamResult(new FileOutputStream(new File("src/data/result.xml")));
+		StreamResult result = new StreamResult(new FileOutputStream(new File("src/data/collection.xml")));
 		transformer.transform(source, result);
 		//System.out.println("END");
 		}catch(Exception e) {
