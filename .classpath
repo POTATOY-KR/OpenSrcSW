@@ -6,5 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/POTATOY/Desktop/kkma-2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
