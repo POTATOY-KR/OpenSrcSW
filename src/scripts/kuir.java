@@ -36,13 +36,4 @@ public class kuir{
 			indexer makepost = new indexer(path);
 		}
 	}
-	public static void makepostfile() {
-		/*ObjectInputStream 이용 역직렬화 hashMap 객체 읽기
-		 * key-list(id wgt id wgt)*/
-		/*hashmap 객체 저장 순서
-		 * fileoutputstream 생성
-		 * objectoutputstream생성
-		 * haspmap객체저장
-		 * objectoutputstream닫기*/
-	}
 }
