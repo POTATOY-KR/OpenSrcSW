@@ -73,9 +73,12 @@ public class makeKeyword {
 					    i = -1;
 				        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(files[0]),"UTF-8"));
 				        String str;
+				        int getidnum = -1;
 				        while ((str = in.readLine()) != null) {
 				        	if(str.indexOf("<doc")!=-1&&str.indexOf("id=")!=-1) {
-				        		i = Integer.parseInt(str.substring(str.indexOf("id=")+4,str.length()-2));
+				        		getidnum = Integer.parseInt(str.substring(str.indexOf("id=")+4,str.length()-2));
+				        		//System.out.println(Integer.parseInt(str.substring(str.indexOf("id=")+4,str.length()-2)));
+				        		i++;
 				        	}
 				        	if(i!=-1) {
 					            if(str.indexOf("title")!=-1) {
@@ -85,7 +88,7 @@ public class makeKeyword {
 					            	alltext[i] = str.substring(str.indexOf("body")+5, str.indexOf("</body>"));
 					            	Element didkkma = dockkma.createElement("doc");
 									mainkkma.appendChild(didkkma);
-									didkkma.setAttribute("id", Integer.toString(i));
+									didkkma.setAttribute("id", Integer.toString(getidnum));
 									Element titlekkma = dockkma.createElement("title");
 									titlekkma.appendChild(dockkma.createTextNode(gettitles[i]));
 									didkkma.appendChild(titlekkma);
