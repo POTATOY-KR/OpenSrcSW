@@ -115,7 +115,7 @@ public class indexer {
 				        	}
 				        }
 				        savepostfile(makeindex,"src/", "index.post");
-				        //readpostfile("src/index.post");
+				        //readpostfile("/src/index.post");
 				        in.close();
 				    } catch (IOException e) {
 				    	System.out.println(e.getMessage());
@@ -138,6 +138,7 @@ public class indexer {
 	}
 	private void readpostfile(String filelo) {
 		try {
+			if(filelo.indexOf("/")==0)filelo = filelo.substring(1, filelo.length());
 			FileInputStream fileStream = new FileInputStream(filelo);
 			ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
 			Object object = objectInputStream.readObject();
