@@ -103,7 +103,7 @@ public class searcher {
 								}
 							}
 							if(indexvalue.size()==kl.size()*indexnum.size()) {//필요한 데이터 다 가져옴
-								ArrayList<Double> simcalc = CalcSim(querytext,querycnt,indexkey,indexvalue);//CalcSim 작동
+								ArrayList<Double> simcalc = InnerProduct(querytext,querycnt,indexkey,indexvalue);//CalcSim 작동
 								Double[] maxnum = new Double[maxlistnum];//최대 유사도 찾기
 								int[] maxindex = new int[maxlistnum];
 								int k = 0;
@@ -148,7 +148,7 @@ public class searcher {
 			System.out.println(e.getMessage());
 		}
 	}
-	private ArrayList<Double> CalcSim(String[] tfnm, int[] tfcnt, ArrayList<String> indexn, ArrayList<Double> indexp) {
+	private ArrayList<Double> InnerProduct(String[] tfnm, int[] tfcnt, ArrayList<String> indexn, ArrayList<Double> indexp) {
 		/*두 벡터 내적 활용: 쿼리 벡터 엘리먼트 4개 (1,1,1,1) X index.post 인덱스*/
 		int k = 0, l = 0, ii = 0, indexsize = indexp.size()/tfcnt.length;
 		ArrayList<Double> clc = new ArrayList<Double>();//tfcnt.length=indexn.size()
