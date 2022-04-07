@@ -35,5 +35,14 @@ public class kuir{
 		else if(command.equals("-i")) {//index.xml 읽기+index.post 만들기  -i ./index.xml
 			indexer makepost = new indexer(path);
 		}
+		else if(command.equals("-s")) {
+			if(args.length>2) {
+				String pluscommand = args[2];
+				String question = args[3];//입력에서 띄어쓰기가 있으면 "" 붙여서 args[3] 안에 다 들어가게 만들어질 예정
+				if(pluscommand.equals("-q")) {
+					searcher searcher = new searcher(path,question);
+				}
+			}
+		}
 	}
 }
