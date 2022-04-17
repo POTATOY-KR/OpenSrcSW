@@ -108,6 +108,7 @@ public class searcher {
 							}
 							if(indexvalue.size()==kl.size()*indexnum.size()) {//필요한 데이터 다 가져옴
 								ArrayList<Double> simcalc = CalcSim(querytext,querycnt,indexkey,indexvalue);//CalcSim 작동
+								//ArrayList<Double> simcalc = InnerProduct(querytext,querycnt,indexkey,indexvalue);//InnerProduct 작동
 								Double[] maxnum = new Double[maxlistnum];//최대 유사도 찾기
 								int[] maxindex = new int[maxlistnum];
 								int k = 0;
@@ -201,6 +202,26 @@ public class searcher {
 			}
 			else {
 				System.out.println("오류");
+			}
+		}
+		return clc;
+	}
+	private ArrayList<Double> InnerProduct(String[] tfnm, int[] tfcnt, ArrayList<String> indexn, ArrayList<Double> indexp) {
+		/*두 벡터 내적 활용: 쿼리 벡터 엘리먼트 4개 (1,1,1,1) X index.post 인덱스*/
+		int k = 0, l = 0, ii = 0, indexsize = indexp.size()/tfcnt.length;
+		ArrayList<Double> clc = new ArrayList<Double>();//tfcnt.length=indexn.size()
+		for (k = 0; k < indexsize; k++)clc.add(0.0);
+		for (k = 0; k < tfcnt.length; k++) {
+			for (l = 0; l < indexn.size(); l++) {
+				if(tfnm[k].equals(indexn.get(l))) {
+					if(debugprintln)System.out.println(k+","+l);
+					for(ii = 0; ii < indexsize; ii++) {//l*indexsize~(l+1)*indexsize
+						clc.set(ii, clc.get(ii)+Double.valueOf(tfcnt[k])*indexp.get((l*indexsize)+ii));
+						clc.set(ii, Math.round(clc.get(ii)*100.0)/100.0);//2자리 자르기
+						if(debugprintln)System.out.println(ii+": "+clc.get(ii)+" by "+tfcnt[k]+"&"+indexp.get((l*indexsize)+ii));
+					}
+					break;
+				}
 			}
 		}
 		return clc;
