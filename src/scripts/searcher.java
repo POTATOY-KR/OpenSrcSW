@@ -17,6 +17,10 @@ import org.snu.ids.kkma.index.KeywordList;
 
 public class searcher {
 	private boolean debugprintln;
+	private class Clhelp{
+		double frnt;
+		double bck;
+	}
 	public searcher(String inputpath, String mainquery) {
 		/*질문 입력 -> kkma형태소 활용 -> 나온 키워드를 통해 indexer의 계산식을 각 문서와 계산하여 유사도 계산 -> 상위 3개의 문서 title 출력*/
 		/*수학-내적: 두 벡터가 비슷하면 커지고 다르면 0*/
@@ -133,6 +137,8 @@ public class searcher {
 									}
 									else {
 										if(maxnum[i].equals(0.0)) {//질의응답 결과: 유사도가 0일때 출력 안하기
+											System.out.println("검색된 문서가 없습니다.");
+											break;
 										}
 										else {
 											System.out.println((i+1)+"순위 문서 이름: "+indexttl.get(maxindex[i])+" / 유사도: "+maxnum[i]);
@@ -152,18 +158,50 @@ public class searcher {
 		/*두 벡터 내적 활용: 쿼리 벡터 엘리먼트 4개 (1,1,1,1) X index.post 인덱스*/
 		int k = 0, l = 0, ii = 0, indexsize = indexp.size()/tfcnt.length;
 		ArrayList<Double> clc = new ArrayList<Double>();//tfcnt.length=indexn.size()
-		for (k = 0; k < indexsize; k++)clc.add(0.0);
+		Clhelp[] clhpidx = new Clhelp[2];
+		for (k = 0; k < 2; k++) {
+			clhpidx[k] = new Clhelp();
+		}
+		ArrayList<Clhelp> clhp = new ArrayList<Clhelp>();
+		for (k = 0; k < indexsize; k++) {
+			clhpidx[0].frnt=0.0;
+			clhpidx[0].bck=0.0;
+			clhp.add(clhpidx[0]);
+			clc.add(0.0);
+		}
 		for (k = 0; k < tfcnt.length; k++) {
 			for (l = 0; l < indexn.size(); l++) {
 				if(tfnm[k].equals(indexn.get(l))) {
 					if(debugprintln)System.out.println(k+","+l);
 					for(ii = 0; ii < indexsize; ii++) {//l*indexsize~(l+1)*indexsize
+						clhpidx[0] = clhp.get(ii);
+						clhpidx[1].frnt = Math.pow(Double.valueOf(tfcnt[k]),2);//1q 제곱
+						clhpidx[1].bck = Math.pow(indexp.get((l*indexsize)+ii), 2);//10 제곱
+						clhpidx[0].frnt = Math.round((clhpidx[0].frnt + clhpidx[1].frnt)*100.0)/100.0;//2자리 자르기
+						clhpidx[0].bck = Math.round((clhpidx[0].bck + clhpidx[1].bck)*100.0)/100.0;//2자리 자르기
+						clhp.set(ii, clhpidx[0]);//갱신
 						clc.set(ii, clc.get(ii)+Double.valueOf(tfcnt[k])*indexp.get((l*indexsize)+ii));
 						clc.set(ii, Math.round(clc.get(ii)*100.0)/100.0);//2자리 자르기
 						if(debugprintln)System.out.println(ii+": "+clc.get(ii)+" by "+tfcnt[k]+"&"+indexp.get((l*indexsize)+ii));
 					}
 					break;
 				}
+			}
+		}
+		/*분자 값:clc.get(k),분모 값:clhp->clhpidx[1].frnt&clhpidx[1].bck(제곱근 이전)*/
+		double clhpdb;
+		for(k =  0; k < indexsize; k++) {
+			clhpidx[1] = clhp.get(k);
+			clhpdb = Math.sqrt(clhpidx[1].frnt)*Math.sqrt(clhpidx[1].bck);
+			if(clhpdb>0.0) {
+				clc.set(k, clc.get(k)/clhpdb);
+				clc.set(k, Math.round(clc.get(k)*100.0)/100.0);//2자리 자르기
+			}
+			else if(clhpdb==0.0) {
+				System.out.println(k+" -> 분모=0");
+			}
+			else {
+				System.out.println("오류");
 			}
 		}
 		return clc;
