@@ -154,10 +154,9 @@ public class searcher {
 			System.out.println(e.getMessage());
 		}
 	}
-	private ArrayList<Double> CalcSim(String[] tfnm, int[] tfcnt, ArrayList<String> indexn, ArrayList<Double> indexp) {
-		/*두 벡터 내적 활용: 쿼리 벡터 엘리먼트 4개 (1,1,1,1) X index.post 인덱스*/
-		int k = 0, l = 0, ii = 0, indexsize = indexp.size()/tfcnt.length;
-		ArrayList<Double> clc = new ArrayList<Double>();//tfcnt.length=indexn.size()
+	private ArrayList<Double> CalcSim(String[] nameget, int[] tcnt, ArrayList<String> idxn, ArrayList<Double> indexp) {
+		int k = 0, l = 0, ii = 0, indexsize = indexp.size()/tcnt.length;
+		ArrayList<Double> clc = new ArrayList<Double>();//tfcnt.length=idxn.size()
 		Clhelp[] clhpidx = new Clhelp[2];
 		for (k = 0; k < 2; k++) {
 			clhpidx[k] = new Clhelp();
@@ -169,20 +168,20 @@ public class searcher {
 			clhp.add(clhpidx[0]);
 			clc.add(0.0);
 		}
-		for (k = 0; k < tfcnt.length; k++) {
-			for (l = 0; l < indexn.size(); l++) {
-				if(tfnm[k].equals(indexn.get(l))) {
+		for (k = 0; k < tcnt.length; k++) {
+			for (l = 0; l < idxn.size(); l++) {
+				if(nameget[k].equals(idxn.get(l))) {
 					if(debugprintln)System.out.println(k+","+l);
 					for(ii = 0; ii < indexsize; ii++) {//l*indexsize~(l+1)*indexsize
 						clhpidx[0] = clhp.get(ii);
-						clhpidx[1].frnt = Math.pow(Double.valueOf(tfcnt[k]),2);//1q 제곱
+						clhpidx[1].frnt = Math.pow(Double.valueOf(tcnt[k]),2);//1q 제곱
 						clhpidx[1].bck = Math.pow(indexp.get((l*indexsize)+ii), 2);//10 제곱
 						clhpidx[0].frnt = Math.round((clhpidx[0].frnt + clhpidx[1].frnt)*100.0)/100.0;//2자리 자르기
 						clhpidx[0].bck = Math.round((clhpidx[0].bck + clhpidx[1].bck)*100.0)/100.0;//2자리 자르기
 						clhp.set(ii, clhpidx[0]);//갱신
-						clc.set(ii, clc.get(ii)+Double.valueOf(tfcnt[k])*indexp.get((l*indexsize)+ii));
+						clc.set(ii, clc.get(ii)+Double.valueOf(tcnt[k])*indexp.get((l*indexsize)+ii));
 						clc.set(ii, Math.round(clc.get(ii)*100.0)/100.0);//2자리 자르기
-						if(debugprintln)System.out.println(ii+": "+clc.get(ii)+" by "+tfcnt[k]+"&"+indexp.get((l*indexsize)+ii));
+						if(debugprintln)System.out.println(ii+": "+clc.get(ii)+" by "+tcnt[k]+"&"+indexp.get((l*indexsize)+ii));
 					}
 					break;
 				}
