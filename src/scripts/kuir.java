@@ -44,5 +44,14 @@ public class kuir{
 				}
 			}
 		}
+		else if(command.equals("-m")) {
+			if(args.length>2) {
+				String pluscommand = args[2];
+				String question = args[3];
+				if(pluscommand.equals("-q")) {
+					MidTerm midterm = new MidTerm(path,question);
+				}
+			}
+		}
 	}
 }
